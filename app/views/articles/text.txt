@@ -1,0 +1,200 @@
+the route for deleting articles as per output of bin/rails routes is:
+
+DELETE /articles/:id(.:format)      articles#destroy
+
+DELETE /articles/:id(.:format)      articles#destroy
+The delete routing method should be used for routes that destroy resources. If this was left as a typical get route, it could be possible for people to craft malicious URLs like this:
+
+<a href='http://example.com/articles/1/destroy'>look at this cat!</a>
+
+
+
+for delete
+You can call destroy on Active Record objects when you want to delete them from the database. Note that we don't need to add a view for this action since we're redirecting to the index action.
+
+Finally, add a 'Destroy' link to your index action template (app/views/articles/index.html.erb) to wrap everything together.
+
+
+-------------------------------------------
+polaris@polaris:~/traning/blog$ rails c
+Running via Spring preloader in process 7172
+Loading development environment (Rails 5.2.1)
+2.4.2 :001 > Article.all 
+  Article Load (0.6ms)  SELECT  "articles".* FROM "articles" LIMIT ?  [["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<Article id: 4, title: "qwer", text: "asdf\r\n", created_at: "2018-09-10 12:52:57", updated_at: "2018-09-10 12:52:57">, #<Article id: 5, title: "uui", text: "bfbjrf", created_at: "2018-09-10 13:19:08", updated_at: "2018-09-10 13:19:08">, #<Article id: 6, title: "hj", text: "bj", created_at: "2018-09-10 13:45:22", updated_at: "2018-09-10 13:45:22">, #<Article id: 7, title: "bdb", text: "nd", created_at: "2018-09-10 13:51:33", updated_at: "2018-09-10 13:51:33">, #<Article id: 8, title: "rr", text: "r", created_at: "2018-09-10 13:54:03", updated_at: "2018-09-10 13:54:03">, #<Article id: 12, title: "gfd", text: "hfds", created_at: "2018-09-10 14:06:06", updated_at: "2018-09-10 14:06:06">, #<Article id: 13, title: "dsd", text: "sas", created_at: "2018-09-10 14:08:13", updated_at: "2018-09-10 14:08:13">, #<Article id: 14, title: "d", text: "f", created_at: "2018-09-10 14:28:27", updated_at: "2018-09-10 14:28:27">]> 
+2.4.2 :002 > aa=Article.all 
+  Article Load (0.5ms)  SELECT  "articles".* FROM "articles" LIMIT ?  [["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<Article id: 4, title: "qwer", text: "asdf\r\n", created_at: "2018-09-10 12:52:57", updated_at: "2018-09-10 12:52:57">, #<Article id: 5, title: "uui", text: "bfbjrf", created_at: "2018-09-10 13:19:08", updated_at: "2018-09-10 13:19:08">, #<Article id: 6, title: "hj", text: "bj", created_at: "2018-09-10 13:45:22", updated_at: "2018-09-10 13:45:22">, #<Article id: 7, title: "bdb", text: "nd", created_at: "2018-09-10 13:51:33", updated_at: "2018-09-10 13:51:33">, #<Article id: 8, title: "rr", text: "r", created_at: "2018-09-10 13:54:03", updated_at: "2018-09-10 13:54:03">, #<Article id: 12, title: "gfd", text: "hfds", created_at: "2018-09-10 14:06:06", updated_at: "2018-09-10 14:06:06">, #<Article id: 13, title: "dsd", text: "sas", created_at: "2018-09-10 14:08:13", updated_at: "2018-09-10 14:08:13">, #<Article id: 14, title: "d", text: "f", created_at: "2018-09-10 14:28:27", updated_at: "2018-09-10 14:28:27">]> 
+2.4.2 :003 > 
+2.4.2 :004 >   
+2.4.2 :005 >   
+2.4.2 :006 >   
+2.4.2 :007 >   
+2.4.2 :008 >   
+2.4.2 :009 >   
+2.4.2 :010 >   
+2.4.2 :011 >   aa
+  Article Load (0.5ms)  SELECT  "articles".* FROM "articles" LIMIT ?  [["LIMIT", 11]]
+ => #<ActiveRecord::Relation [#<Article id: 4, title: "qwer", text: "asdf\r\n", created_at: "2018-09-10 12:52:57", updated_at: "2018-09-10 12:52:57">, #<Article id: 5, title: "uui", text: "bfbjrf", created_at: "2018-09-10 13:19:08", updated_at: "2018-09-10 13:19:08">, #<Article id: 6, title: "hj", text: "bj", created_at: "2018-09-10 13:45:22", updated_at: "2018-09-10 13:45:22">, #<Article id: 7, title: "bdb", text: "nd", created_at: "2018-09-10 13:51:33", updated_at: "2018-09-10 13:51:33">, #<Article id: 8, title: "rr", text: "r", created_at: "2018-09-10 13:54:03", updated_at: "2018-09-10 13:54:03">, #<Article id: 12, title: "gfd", text: "hfds", created_at: "2018-09-10 14:06:06", updated_at: "2018-09-10 14:06:06">, #<Article id: 13, title: "dsd", text: "sas", created_at: "2018-09-10 14:08:13", updated_at: "2018-09-10 14:08:13">, #<Article id: 14, title: "d", text: "f", created_at: "2018-09-10 14:28:27", updated_at: "2018-09-10 14:28:27">]> 
+2.4.2 :012 > aa.first
+  Article Load (0.7ms)  SELECT  "articles".* FROM "articles" ORDER BY "articles"."id" ASC LIMIT ?  [["LIMIT", 1]]
+ => #<Article id: 4, title: "qwer", text: "asdf\r\n", created_at: "2018-09-10 12:52:57", updated_at: "2018-09-10 12:52:57"> 
+2.4.2 :013 > aa.first.id
+ => 4 
+2.4.2 :014 > aa.first.title
+ => "qwer" 
+2.4.2 :015 > Article.find(4)
+  Article Load (0.2ms)  SELECT  "articles".* FROM "articles" WHERE "articles"."id" = ? LIMIT ?  [["id", 4], ["LIMIT", 1]]
+ => #<Article id: 4, title: "qwer", text: "asdf\r\n", created_at: "2018-09-10 12:52:57", updated_at: "2018-09-10 12:52:57"> 
+2.4.2 :016 > 
+--------------------------------------------------------------------------
+
+
+
+
+
+rails c 
+Article.all 
+  Article Load (0.6ms)  SELECT  "articles".* FROM "articles" LIMIT ?  [["LIMIT", 11]]
+table name in db =articles
+
+ aa=Article.all 
+aa  (show records)
+aa.first
+aa.first.id
+aa.first.title
+Article.find(4)
+ Article Load (0.2ms)  SELECT  "articles".* FROM "articles" WHERE "articles"."id" = ? LIMIT ?  [["id", 4], ["LIMIT", 1]]
+
+
+Article.all 
+
+
+obj = Article.new
+obj.title = 'abctl'
+obj.id = 1
+
+obj1 = Article.new
+obj1.title = 'xyz'
+obj1.id = 2
+
+
+
+id title
+ ------------------
+1  abctl
+-------------
+2  xyz
+
+
+[obj, obj1]
+-------------------------------------------------------
+The (:references) keyword used in the bash command is a special data type for models. It creates a new column on your database table with the provided model name appended with an _id that can hold integer values. To get a better understanding, analyze the db/schema.rb file after running the migration.
+
+
+This adds a form on the Article show page that creates a new comment by calling the CommentsController create action. The form_with call here uses an array, which will build a nested route, such as /articles/1/comments.
+
+Once we have made the new comment, we send the user back to the original article using the article_path(@article) helper. As we have already seen, this calls the show action of the ArticlesController which in turn renders the show.html.erb template. This is where we want the comment to show, so let's add that to the app/views/articles/show.html.erb.
+
+comments::
+
+This adds a form on the Article show page that creates a new comment by calling the CommentsController create action. The form_with call here uses an array, which will build a nested route, such as /articles/1/comments.
+
+refactor
+The second render just defines the partial template we want to render, comments/form. Rails is smart enough to spot the forward slash in that string and realize that you want to render the _form.html.erb file in the app/views/comments directory.
+
+The @article object is available to any partials rendered in the view because we defined it as an instance variable.
+----------------------------------------------------------------------------------------------------------
+api
+ is a set of routines, protocols, and tools for building software applications
+ specifies how software components should interact
+ used when programming (GUI) components
+
+
+Association
+
+Article.first.comments
+
+comments.Article.find(4)
+======
+cheq
+
+
+https://www.martinfowler.com/eaaCatalog/activeRecord.html
+ApplicationRecord inherits from ActiveRecord::Base, which defines a number of helpful methods. You can use the ActiveRecord::Base.table_name= method to specify the table name that should be used:
+
+class Product < ApplicationRecord
+  self.table_name = "my_products"
+end
+
+
+class ProductTest < ActiveSupport::TestCase
+  set_fixture_class my_products: Product
+  fixtures :my_products
+  ...
+end
+
+
+
+Migrations 
+Ruby DSL
+
+On databases that support transactions with statements that change the schema, migrations are wrapped in a transaction. If the database does not support this then when a migration fails the parts of it that succeeded will not be rolled back. You will have to rollback the changes that were made by hand.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
