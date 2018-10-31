@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_26_124303) do
+ActiveRecord::Schema.define(version: 2018_10_31_101133) do
 
-  create_table "accounts", force: :cascade do |t|
-    t.string "name"
+  create_table "account_histories", force: :cascade do |t|
+    t.integer "rating"
+    t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_histories_on_account_id"
+  end
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "number"
+    t.integer "supplier_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["supplier_id"], name: "index_accounts_on_supplier_id"
   end
 
   create_table "admins", force: :cascade do |t|
@@ -44,6 +54,23 @@ ActiveRecord::Schema.define(version: 2018_10_26_124303) do
     t.string "size"
     t.string "legacy_code"
     t.string "card_number"
+    t.integer "counter_cache"
+    t.boolean "locked", default: false
+    t.float "price"
+    t.integer "lock_version"
+  end
+
+  create_table "assemblies", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "assemblies_parts", id: false, force: :cascade do |t|
+    t.integer "assembly_id", null: false
+    t.integer "part_id", null: false
+    t.index ["assembly_id", "part_id"], name: "index_assemblies_parts_on_assembly_id_and_part_id"
+    t.index ["part_id", "assembly_id"], name: "index_assemblies_parts_on_part_id_and_assembly_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -55,10 +82,32 @@ ActiveRecord::Schema.define(version: 2018_10_26_124303) do
     t.index ["article_id"], name: "index_comments_on_article_id"
   end
 
+  create_table "data", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "employees", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "emps", force: :cascade do |t|
+    t.string "name"
+    t.integer "manager_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["manager_id"], name: "index_emps_on_manager_id"
+  end
+
+  create_table "histories", force: :cascade do |t|
+    t.integer "rating"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_histories_on_account_id"
   end
 
   create_table "models", force: :cascade do |t|
@@ -86,6 +135,12 @@ ActiveRecord::Schema.define(version: 2018_10_26_124303) do
     t.index ["employee_id"], name: "index_offices_on_employee_id"
   end
 
+  create_table "parts", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "people", force: :cascade do |t|
     t.text "name"
     t.datetime "created_at", null: false
@@ -93,6 +148,15 @@ ActiveRecord::Schema.define(version: 2018_10_26_124303) do
     t.string "email"
     t.string "email_confirmation"
     t.string "terms_of_service"
+  end
+
+  create_table "pictures", force: :cascade do |t|
+    t.string "name"
+    t.string "imageable_type"
+    t.integer "imageable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["imageable_type", "imageable_id"], name: "index_pictures_on_imageable_type_and_imageable_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -106,12 +170,34 @@ ActiveRecord::Schema.define(version: 2018_10_26_124303) do
     t.index ["supplier_type", "supplier_id"], name: "index_products_on_supplier_type_and_supplier_id"
   end
 
-  create_table "suppliers", force: :cascade do |t|
+  create_table "students", force: :cascade do |t|
     t.string "name"
-    t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_suppliers_on_account_id"
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string "name"
+    t.date "time"
+    t.integer "student_id"
+    t.integer "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_subjects_on_student_id"
+    t.index ["teacher_id"], name: "index_subjects_on_teacher_id"
+  end
+
+  create_table "suppliers", force: :cascade do |t|
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "teachers", force: :cascade do |t|
+    t.string "name"
+    t.integer "age"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

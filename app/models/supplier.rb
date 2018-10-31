@@ -1,3 +1,4 @@
 class Supplier < ApplicationRecord
-  belongs_to :account
+  has_one :account
+  has_one :history, through: :account
 end

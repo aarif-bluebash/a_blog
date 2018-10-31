@@ -1,3 +1,4 @@
 class Account < ApplicationRecord
-  has_one :supplier
+  belongs_to :supplier
+  has_one :history
 end

@@ -1,10 +1,16 @@
 class Article < ApplicationRecord
 mount_uploader :image, ImageUploader
+ActiveRecord::Base.lock_optimistically = false
+#self.locking_column = :lock_client_column
 
 #has_many :abcs, dependent: :destroy
-	has_many :comments,  dependent: :destroy
-# after_touch :log_when_article_or_comments_touched
+#	has_many :comments, inverse_of: 'writer'
 
+  has_many :comments,  dependent: :destroy
+  has_many :pictures, as: :imageable
+  
+# after_touch :log_when_article_or_comments_touched
+#has_many :comments, -> { order('created_at DESC')}
 
 	  
 	
@@ -18,6 +24,29 @@ validate :image_size_validation
 
 
 
+# The visible_articles method below is expected to return a Relation.
+
+ 
+
+def myname
+  
+   articles = Article.last.visible_articles
+end  
+
+
+
+def visible_articles
+  case title
+  when 'aa'
+    puts 'hyu'
+  when 'qq'
+    puts 'ss'
+  when 'qp'
+    puts 'qp' # => returning [] or nil breaks the caller code in this case
+  else
+    puts 'no match'
+  end  
+end
 
 
 
